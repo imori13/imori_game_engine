@@ -4,8 +4,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\output\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\intermediate\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Platform)-$(Configuration)\output\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)-$(Configuration)\intermediate\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
