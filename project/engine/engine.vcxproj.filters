@@ -14,19 +14,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="include\pch.hpp">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="core.h">
+    <ClInclude Include="include\core\core.hpp">
       <Filter>source\core</Filter>
     </ClInclude>
+    <ClInclude Include="include\math\engine_math.hpp">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\random.hpp" />
+    <ClInclude Include="include\debug\debug.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="source\pch.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="core.cpp">
+    <ClCompile Include="source\core\core.cpp">
       <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\math\random.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\debug\debug.cpp">
+      <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

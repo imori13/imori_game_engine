@@ -1,5 +1,5 @@
-#include "pch.h"
-#include "core.h"
+#include "pch.hpp"
+#include "core/core.hpp"
 
 namespace core
 {
