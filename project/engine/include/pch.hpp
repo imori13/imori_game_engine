@@ -4,6 +4,12 @@
 #include <codeanalysis/warnings.h>
 #pragma warning(disable: ALL_CODE_ANALYSIS_WARNINGS ALL_CPPCORECHECK_WARNINGS)
 
+#define NOMINMAX
+#define NOHELP
+#define NODRAWTEXT
+#define NOGDI
+#define NOBITMAP
+
 // vcpkg
 #include <gsl/gsl>
 #include <boost/random.hpp>
@@ -12,12 +18,7 @@
 
 // default
 #include <windows.h>
-
-#define NOMINMAX
-#define NOHELP
-#define NODRAWTEXT
-#define NOGDI
-#define NOBITMAP
+#include <immintrin.h>	// AVX512
 
 #include <cstdint>
 #include <cstdio>
@@ -36,3 +37,4 @@
 
 #pragma warning(disable : 26440) // noexceptとして宣言することができます
 #pragma warning(disable : 26432) // すべて定義または削除します
+#pragma warning(disable : 26455) // 規定のコンストラクターはthrowできません。noexceptとして宣言します

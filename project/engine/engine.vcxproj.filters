@@ -20,11 +20,14 @@
     <ClInclude Include="include\core\core.hpp">
       <Filter>source\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\math\engine_math.hpp">
+    <ClInclude Include="include\math\math.hpp">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="include\math\random.hpp" />
     <ClInclude Include="include\debug\debug.hpp" />
+    <ClInclude Include="include\math\vector3.hpp">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\pch.cpp">
@@ -37,6 +40,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\debug\debug.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\math\vector3.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
