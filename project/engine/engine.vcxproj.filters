@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="resource">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="source">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>h;cpp;</Extensions>
@@ -12,38 +8,78 @@
     <Filter Include="source\core">
       <UniqueIdentifier>{626abef7-4c73-41f0-8715-1948393f415a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\math">
+      <UniqueIdentifier>{f6ba71a2-d21f-45a9-a9ce-3ce295d66d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\utility">
+      <UniqueIdentifier>{8cff9d23-738a-4f2f-b4d8-f7ee8085efae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{bed8cb18-a41e-4ef7-99ec-a8893f57464c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\core\system">
+      <UniqueIdentifier>{2364be2c-a994-4981-a4bf-d961d33a7710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\core\graphic">
+      <UniqueIdentifier>{78880733-090d-4834-b90d-24c758313104}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\pch.hpp">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\core.hpp">
+    <ClInclude Include="core.hpp">
       <Filter>source\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\math\math.hpp">
+    <ClInclude Include="math_calc.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
+    <ClInclude Include="vector2.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
+    <ClInclude Include="vector3.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix4x4.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.hpp">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="include\math\random.hpp" />
-    <ClInclude Include="include\debug\debug.hpp" />
-    <ClInclude Include="include\math\vector3.hpp">
-      <Filter>source</Filter>
+    <ClInclude Include="random.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="math.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
+    <ClInclude Include="winapp.hpp">
+      <Filter>source\core\system</Filter>
+    </ClInclude>
+    <ClInclude Include="graphic_d3d12.hpp">
+      <Filter>source\core\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="descriptor_heap.hpp">
+      <Filter>source\core\graphic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\pch.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\core\core.cpp">
+    <ClCompile Include="core.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="source\math\random.cpp">
+    <ClCompile Include="pch.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\debug\debug.cpp">
-      <Filter>source</Filter>
+    <ClCompile Include="math.cpp">
+      <Filter>source\math</Filter>
     </ClCompile>
-    <ClCompile Include="source\math\vector3.cpp">
-      <Filter>source</Filter>
+    <ClCompile Include="winapp.cpp">
+      <Filter>source\core\system</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic_d3d12.cpp">
+      <Filter>source\core\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="descriptor_heap.cpp">
+      <Filter>source\core\graphic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,8 +1,13 @@
 #pragma once
 
-#pragma warning(push)
+#pragma warning(push, 0)
 #include <codeanalysis/warnings.h>
 #pragma warning(disable: ALL_CODE_ANALYSIS_WARNINGS ALL_CPPCORECHECK_WARNINGS)
+
+#ifdef _DEBUG
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#endif
 
 #define NOMINMAX
 #define NOHELP
@@ -12,14 +17,20 @@
 
 // vcpkg
 #include <gsl/gsl>
-#include <boost/random.hpp>
 #include <boost/format.hpp>
+#include <boost/random.hpp>
 #include <boost/random/random_device.hpp>
+
+// direct3d
+#include <wrl/client.h>
+#include <directx/d3d12.h>
+#pragma comment(lib, "d3d12.lib")
+
+#include <dxgi1_4.h>
+#pragma comment(lib, "dxgi.lib")
 
 // default
 #include <windows.h>
-#include <immintrin.h>	// AVX512
-
 #include <cstdint>
 #include <cstdio>
 #include <vector>
@@ -29,12 +40,11 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <chrono>
 
 #undef near
 #undef far
 
 #pragma warning(pop)
 
-#pragma warning(disable : 26440) // noexceptとして宣言することができます
-#pragma warning(disable : 26432) // すべて定義または削除します
-#pragma warning(disable : 26455) // 規定のコンストラクターはthrowできません。noexceptとして宣言します
+#pragma warning(disable: 26812)	// C26812: enum -> enum class
