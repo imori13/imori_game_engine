@@ -2,17 +2,17 @@
 
 namespace
 {
-	constexpr uint32_t LOOP_COUNT = 10u;
+	inline constexpr uint32_t LOOP_COUNT = 10u;
 }
 
 namespace math
 {
-	constexpr float pi = 3.1415927f;
+	inline constexpr float pi = 3.1415927f;
 
-	constexpr inline float sin(float x);
-	constexpr inline float cos(float x);
-	constexpr inline float tan(float x);
-	constexpr inline float sqrt(float x);
+	inline constexpr float sin(float x);
+	inline constexpr float cos(float x);
+	inline constexpr float tan(float x);
+	inline constexpr float sqrt(float x);
 }
 
 namespace math

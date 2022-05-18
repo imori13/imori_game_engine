@@ -27,19 +27,19 @@ public:
 	void wait_gpu();
 
 private:
-	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pQueue;
-	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_pSwapchain;
+	Microsoft::WRL::ComPtr<ID3D12Device> m_device;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_command_queue;
+	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapchain;
 
-	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, FRAME_COUNT> m_pColorBuffer;
-	std::array<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>, FRAME_COUNT> m_pCommandAllocator;
+	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, FRAME_COUNT> m_color_buffer;
+	std::array<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>, FRAME_COUNT> m_command_allocator;
 
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
-	std::unique_ptr<descriptor_heap> m_pHeapRTV;
-	Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_command_list;
+	std::unique_ptr<descriptor_heap> m_heap_rtv;
+	Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;
 
-	HANDLE m_fenceEvent;
-	uint32_t m_frameIndex;
+	HANDLE m_fence_event;
+	uint32_t m_frame_index;
 
-	std::array<uint64_t, FRAME_COUNT> m_fenceCounter;
+	std::array<uint64_t, FRAME_COUNT> m_fence_counter;
 };

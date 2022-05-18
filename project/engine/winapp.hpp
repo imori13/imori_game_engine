@@ -23,11 +23,16 @@ public:
 
 public:
 	bool isloop() const noexcept;
-	uint32_t getWidth() const noexcept;
-	uint32_t getHeight() const noexcept;
-	HINSTANCE getHInstance() const noexcept;
-	HWND getHWnd() const noexcept;
+	inline uint32_t get_width() const noexcept { return m_width; }
+	inline uint32_t get_height() const noexcept { return m_height; }
+	inline HINSTANCE get_hinstance() const noexcept { return m_hinst; }
+	inline HWND get_hwnd() const noexcept { return m_hwnd; }
 
 private:
-	class winapp_impl; std::unique_ptr<winapp_impl> m_impl;
+	uint32_t m_width;
+	uint32_t m_height;
+
+	HINSTANCE m_hinst;
+	HWND m_hwnd;
+	MSG m_msg;
 };

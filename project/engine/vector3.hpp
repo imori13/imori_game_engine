@@ -13,22 +13,18 @@ namespace math
 	template<typename T> class basic_vector3
 	{
 	public:
-		inline constexpr explicit basic_vector3();
-		inline constexpr explicit basic_vector3(T value);
-		inline constexpr explicit basic_vector3(T x, T y, T z);
+		explicit inline constexpr basic_vector3() noexcept;
+		explicit inline constexpr basic_vector3(T value);
+		explicit inline constexpr basic_vector3(T x, T y, T z);
 
 	public:
 		inline constexpr T* data();
-		inline constexpr T& at(uint32_t i);
-
 		inline constexpr T& x();
 		inline constexpr T& y();
 		inline constexpr T& z();
 
 	public:
 		inline constexpr const T* data() const;
-		inline constexpr const T& at(uint32_t i) const;
-
 		inline constexpr const T& x() const;
 		inline constexpr const T& y() const;
 		inline constexpr const T& z() const;
@@ -69,18 +65,16 @@ namespace math
 	// inline’è‹`
 	// ----------------------------------------------------------------------------------------------------
 
-	template<typename T> inline constexpr basic_vector3<T>::basic_vector3() : basic_vector3(0) {}
+	template<typename T> inline constexpr basic_vector3<T>::basic_vector3() noexcept : basic_vector3(0) {}
 	template<typename T> inline constexpr basic_vector3<T>::basic_vector3(T value) : basic_vector3(value, value, value) {}
 	template<typename T> inline constexpr basic_vector3<T>::basic_vector3(T x, T y, T z) : _{ x,y,z } {}
 
 	template<typename T> inline constexpr T* basic_vector3<T>::data() { return _.data(); }
-	template<typename T> inline constexpr T& basic_vector3<T>::at(uint32_t i) { return _.at(i); }
 	template<typename T> inline constexpr T& basic_vector3<T>::x() { return _.at(VEC3_X); }
 	template<typename T> inline constexpr T& basic_vector3<T>::y() { return _.at(VEC3_Y); }
 	template<typename T> inline constexpr T& basic_vector3<T>::z() { return _.at(VEC3_Z); }
 
 	template<typename T> inline constexpr const T* basic_vector3<T>::data() const { return _.data(); }
-	template<typename T> inline constexpr const T& basic_vector3<T>::at(uint32_t i) const { return _.at(i); }
 	template<typename T> inline constexpr const T& basic_vector3<T>::x() const { return _.at(VEC3_X); }
 	template<typename T> inline constexpr const T& basic_vector3<T>::y() const { return _.at(VEC3_Y); }
 	template<typename T> inline constexpr const T& basic_vector3<T>::z() const { return _.at(VEC3_Z); }

@@ -48,3 +48,4 @@
 #pragma warning(pop)
 
 #pragma warning(disable: 26812)	// C26812: enum -> enum class
+#pragma warning(disable: 4324) // 

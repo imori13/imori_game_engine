@@ -1,6 +1,7 @@
 #include "pch.hpp"
 #include "graphic_d3d12.hpp"
 #include "descriptor_heap.hpp"
+#include "gpu_buffer.hpp"
 
 using namespace Microsoft::WRL;
 
@@ -18,21 +19,21 @@ namespace
 
 	ComPtr<ID3D12Device> create_device_11_0()
 	{
-		ComPtr<ID3D12Device> pDevice;
+		ComPtr<ID3D12Device> device;
 
 		const auto& hr = D3D12CreateDevice(
 		nullptr,
 		D3D_FEATURE_LEVEL_11_0,
-		IID_PPV_ARGS(pDevice.GetAddressOf()));
+		IID_PPV_ARGS(device.GetAddressOf()));
 
 		Ensures(SUCCEEDED(hr));
 
-		return pDevice;
+		return device;
 	}
 
 	ComPtr<ID3D12CommandQueue> create_command_queue(gsl::not_null<ID3D12Device*> pDevice)
 	{
-		ComPtr<ID3D12CommandQueue> pCommandQueue;
+		ComPtr<ID3D12CommandQueue> command_queue;
 
 		D3D12_COMMAND_QUEUE_DESC desc{};
 		desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -40,30 +41,30 @@ namespace
 		desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 		desc.NodeMask = 0;
 
-		const auto& hr = pDevice->CreateCommandQueue(&desc, IID_PPV_ARGS(pCommandQueue.GetAddressOf()));
+		const auto& hr = pDevice->CreateCommandQueue(&desc, IID_PPV_ARGS(command_queue.GetAddressOf()));
 		Ensures(SUCCEEDED(hr));
 
-		return pCommandQueue;
+		return command_queue;
 	}
 
 	ComPtr<IDXGIFactory4> create_factory()
 	{
-		ComPtr<IDXGIFactory4> pFactory = nullptr;
-		const auto& hr = CreateDXGIFactory1(IID_PPV_ARGS(pFactory.GetAddressOf()));
+		ComPtr<IDXGIFactory4> factory = nullptr;
+		const auto& hr = CreateDXGIFactory1(IID_PPV_ARGS(factory.GetAddressOf()));
 		Ensures(SUCCEEDED(hr));
 
-		return pFactory;
+		return factory;
 	}
 
 	ComPtr<IDXGISwapChain3> create_swapchain(gsl::not_null<ID3D12CommandQueue*> pQueue, const winapp& winapp)
 	{
 		// create factory
-		const auto pFactory = create_factory();
+		const auto factory = create_factory();
 
 		// setting swapchain
 		DXGI_SWAP_CHAIN_DESC desc{};
-		desc.BufferDesc.Width = winapp.getWidth();
-		desc.BufferDesc.Height = winapp.getHeight();
+		desc.BufferDesc.Width = winapp.get_width();
+		desc.BufferDesc.Height = winapp.get_height();
 		desc.BufferDesc.RefreshRate.Numerator = 60;
 		desc.BufferDesc.RefreshRate.Denominator = 1;
 		desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
@@ -73,54 +74,54 @@ namespace
 		desc.SampleDesc.Quality = 0;
 		desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		desc.BufferCount = FRAME_COUNT;
-		desc.OutputWindow = winapp.getHWnd();
+		desc.OutputWindow = winapp.get_hwnd();
 		desc.Windowed = true;	// window_mode?
 		desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 		// create swapchain
-		ComPtr<IDXGISwapChain> pSwapchain;
-		auto hr = pFactory->CreateSwapChain(pQueue, &desc, pSwapchain.GetAddressOf());
+		ComPtr<IDXGISwapChain> swapchain;
+		auto hr = factory->CreateSwapChain(pQueue, &desc, swapchain.GetAddressOf());
 		Ensures(SUCCEEDED(hr));
 
-		ComPtr<IDXGISwapChain3> pSwapChain3;
-		hr = pSwapchain->QueryInterface(IID_PPV_ARGS(pSwapChain3.GetAddressOf()));
+		ComPtr<IDXGISwapChain3> swapchain3;
+		hr = swapchain->QueryInterface(IID_PPV_ARGS(swapchain3.GetAddressOf()));
 		Ensures(SUCCEEDED(hr));
 
-		return pSwapChain3;
+		return swapchain3;
 	}
 
 	ComPtr<ID3D12CommandAllocator> create_command_allocator(gsl::not_null<ID3D12Device*> pDevice)
 	{
-		ComPtr<ID3D12CommandAllocator> pCommandAllocator;
+		ComPtr<ID3D12CommandAllocator> command_allocator;
 		const auto& hr = pDevice->CreateCommandAllocator(
 			D3D12_COMMAND_LIST_TYPE_DIRECT,
-			IID_PPV_ARGS(pCommandAllocator.GetAddressOf())
+			IID_PPV_ARGS(command_allocator.GetAddressOf())
 		);
 		Ensures(SUCCEEDED(hr));
 
-		return pCommandAllocator;
+		return command_allocator;
 	}
 
 	ComPtr<ID3D12GraphicsCommandList> create_command_list(gsl::not_null<ID3D12Device*> pDevice, gsl::not_null<ID3D12CommandAllocator*> pCommandAllocator)
 	{
-		ComPtr<ID3D12GraphicsCommandList> pCommandList;
+		ComPtr<ID3D12GraphicsCommandList> command_list;
 
 		const auto& hr = pDevice->CreateCommandList(
 			0,
 			D3D12_COMMAND_LIST_TYPE_DIRECT,
 			pCommandAllocator,
 			nullptr,
-			IID_PPV_ARGS(pCommandList.GetAddressOf())
+			IID_PPV_ARGS(command_list.GetAddressOf())
 		);
 		Ensures(SUCCEEDED(hr));
 
-		return pCommandList;
+		return command_list;
 	}
 
 	ComPtr<ID3D12DescriptorHeap> create_heap(gsl::not_null<ID3D12Device*> pDevice)
 	{
-		ComPtr<ID3D12DescriptorHeap> pHeap;
+		ComPtr<ID3D12DescriptorHeap> heap;
 
 		// setting descriptor heap
 		D3D12_DESCRIPTOR_HEAP_DESC desc{};
@@ -130,20 +131,20 @@ namespace
 		desc.NodeMask = 0;
 
 		// create descriptor heap
-		const auto& hr = pDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(pHeap.GetAddressOf()));
+		const auto& hr = pDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(heap.GetAddressOf()));
 		Ensures(SUCCEEDED(hr));
 
-		return pHeap;
+		return heap;
 	}
 
 	ComPtr<ID3D12Resource> get_color_buffer(gsl::not_null<IDXGISwapChain3*> pSwapchain, uint32_t frameIndex)
 	{
-		ComPtr<ID3D12Resource> pResource;
+		ComPtr<ID3D12Resource> resource;
 
-		const auto& hr = pSwapchain->GetBuffer(frameIndex, IID_PPV_ARGS(pResource.GetAddressOf()));
+		const auto& hr = pSwapchain->GetBuffer(frameIndex, IID_PPV_ARGS(resource.GetAddressOf()));
 		Ensures(SUCCEEDED(hr));
 
-		return pResource;
+		return resource;
 	}
 }
 
@@ -156,100 +157,126 @@ graphic_d3d12::graphic_d3d12(const winapp& winapp)
 #endif
 
 	// create device
-	m_pDevice = create_device_11_0();
-	m_pQueue = create_command_queue(m_pDevice.Get());
+	m_device = create_device_11_0();
+	m_command_queue = create_command_queue(m_device.Get());
 
 	// create swapchain
 	{
 		// create swapchain
-		m_pSwapchain = create_swapchain(m_pQueue.Get(), winapp);
+		m_swapchain = create_swapchain(m_command_queue.Get(), winapp);
 
 		// get current back buffer index
-		m_frameIndex = m_pSwapchain->GetCurrentBackBufferIndex();
+		m_frame_index = m_swapchain->GetCurrentBackBufferIndex();
 	}
 
 	// create command allocator
 	{
-		for(auto& command_allocator : m_pCommandAllocator)
+		for(auto& command_allocator : m_command_allocator)
 		{
-			command_allocator = create_command_allocator(m_pDevice.Get());
+			command_allocator = create_command_allocator(m_device.Get());
 		}
 	}
 
 	// create commandlist
 	{
-		m_pCommandList = create_command_list(m_pDevice.Get(), m_pCommandAllocator.at(m_frameIndex).Get());
+		m_command_list = create_command_list(m_device.Get(), m_command_allocator.at(m_frame_index).Get());
 	}
 
 	// create render target view
 	{
-		m_pHeapRTV = std::make_unique<descriptor_heap>(m_pDevice.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, FRAME_COUNT);
+		m_heap_rtv = std::make_unique<descriptor_heap>(m_device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, FRAME_COUNT);
 
-		for(auto i = 0u; i < m_pColorBuffer.size(); ++i)
+		for(auto i = 0u; i < m_color_buffer.size(); ++i)
 		{
-			m_pColorBuffer.at(i) = get_color_buffer(m_pSwapchain.Get(), i);
+			m_color_buffer.at(i) = get_color_buffer(m_swapchain.Get(), i);
 
-			m_pHeapRTV->createRenderTargetView(m_pColorBuffer.at(i).Get());
+			m_heap_rtv->createRenderTargetView(m_color_buffer.at(i).Get());
 		}
 	}
 
 	// create fence
 	{
 		// reset counter
-		for(auto& fence_counter : m_fenceCounter)
+		for(auto& fence_counter : m_fence_counter)
 		{
 			fence_counter = 0;
 		}
 
 		// create fence
-		hr = m_pDevice->CreateFence(
-			m_fenceCounter.at(m_frameIndex),
+		hr = m_device->CreateFence(
+			m_fence_counter.at(m_frame_index),
 			D3D12_FENCE_FLAG_NONE,
-			IID_PPV_ARGS(m_pFence.GetAddressOf())
+			IID_PPV_ARGS(m_fence.GetAddressOf())
 		);
 		Ensures(SUCCEEDED(hr));
 
-		++m_fenceCounter.at(m_frameIndex);
+		++m_fence_counter.at(m_frame_index);
 
 		// create event
-		m_fenceEvent = CreateEvent(nullptr, false, false, nullptr);
-		Ensures(m_fenceEvent != nullptr);
+		m_fence_event = CreateEvent(nullptr, false, false, nullptr);
+		Ensures(m_fence_event != nullptr);
 	}
 
-	m_pCommandList->Close();
+	m_command_list->Close();
+
+	// ----------------------------------------------------------------------------------------------------
+
+	std::vector<vertex> vertices =
+	{
+		vertex{ vector3{-1.0f,-1.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f} },
+		vertex{ vector3{ 1.0f,-1.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f} },
+		vertex{ vector3{ 0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f} },
+	};
+
+	gpu_buffer<vertex> vertex_buffer(m_device.Get(), vertices.size() * sizeof(vertex));
+
+	vertex_buffer.map(vertices);
+
+	struct alignas(256) transform
+	{
+		matrix4x4 world;
+		matrix4x4 view;
+		matrix4x4 proj;
+	};
+
+	transform tttt{};
+
+	gpu_buffer<transform> transform_buffer(m_device.Get(), sizeof(transform));
+
+	transform_buffer.map(gsl::make_span<transform>(&tttt, 1));
 }
 
 graphic_d3d12::~graphic_d3d12() noexcept(false)
 {
 	wait_gpu();
 
-	if(m_fenceEvent != nullptr)
+	if(m_fence_event != nullptr)
 	{
-		CloseHandle(m_fenceEvent);
-		m_fenceEvent = nullptr;
+		CloseHandle(m_fence_event);
+		m_fence_event = nullptr;
 	}
 }
 
 void graphic_d3d12::render()
 {
 	// start commandt
-	m_pCommandAllocator.at(m_frameIndex)->Reset();
-	m_pCommandList->Reset(m_pCommandAllocator.at(m_frameIndex).Get(), nullptr);
+	m_command_allocator.at(m_frame_index)->Reset();
+	m_command_list->Reset(m_command_allocator.at(m_frame_index).Get(), nullptr);
 
 	// resource barrier
 	D3D12_RESOURCE_BARRIER barrier{};
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	barrier.Transition.pResource = m_pColorBuffer.at(m_frameIndex).Get();
+	barrier.Transition.pResource = m_color_buffer.at(m_frame_index).Get();
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 
-	m_pCommandList->ResourceBarrier(1, &barrier);
+	m_command_list->ResourceBarrier(1, &barrier);
 
 	constexpr const std::array<float, 4> clear_color = { 0.25f,0.25f,0.25f,1.0f };
 
-	m_pCommandList->ClearRenderTargetView(m_pHeapRTV->at(m_frameIndex), clear_color.data(), 0, nullptr);
+	m_command_list->ClearRenderTargetView(m_heap_rtv->at(m_frame_index), clear_color.data(), 0, nullptr);
 
 	// •`‰æˆ—
 	{
@@ -259,46 +286,46 @@ void graphic_d3d12::render()
 	// resource barrier
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	barrier.Transition.pResource = m_pColorBuffer.at(m_frameIndex).Get();
+	barrier.Transition.pResource = m_color_buffer.at(m_frame_index).Get();
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 
-	m_pCommandList->ResourceBarrier(1, &barrier);
+	m_command_list->ResourceBarrier(1, &barrier);
 
 	// close command
-	m_pCommandList->Close();
+	m_command_list->Close();
 
 	// exture
-	std::array<ID3D12CommandList*, 1> ppCmdLists = { m_pCommandList.Get() };
-	m_pQueue->ExecuteCommandLists(1, ppCmdLists.data());
+	std::array<ID3D12CommandList*, 1> ppCmdLists = { m_command_list.Get() };
+	m_command_queue->ExecuteCommandLists(1, ppCmdLists.data());
 
 	// ------------------------------------------------------------------------------------------
 
 	constexpr uint32_t interval = 1;
-	m_pSwapchain->Present(interval, 0);
+	m_swapchain->Present(interval, 0);
 
-	const auto currentValue = m_fenceCounter.at(m_frameIndex);
-	m_pQueue->Signal(m_pFence.Get(), currentValue);
+	const auto currentValue = m_fence_counter.at(m_frame_index);
+	m_command_queue->Signal(m_fence.Get(), currentValue);
 
-	m_frameIndex = m_pSwapchain->GetCurrentBackBufferIndex();
+	m_frame_index = m_swapchain->GetCurrentBackBufferIndex();
 
-	if(m_pFence->GetCompletedValue() < m_fenceCounter.at(m_frameIndex))
+	if(m_fence->GetCompletedValue() < m_fence_counter.at(m_frame_index))
 	{
-		m_pFence->SetEventOnCompletion(m_fenceCounter.at(m_frameIndex), m_fenceEvent);
-		WaitForSingleObjectEx(m_fenceEvent, INFINITE, false);
+		m_fence->SetEventOnCompletion(m_fence_counter.at(m_frame_index), m_fence_event);
+		WaitForSingleObjectEx(m_fence_event, INFINITE, false);
 	}
 
-	m_fenceCounter.at(m_frameIndex) = currentValue + 1;
+	m_fence_counter.at(m_frame_index) = currentValue + 1;
 }
 
 void graphic_d3d12::wait_gpu()
 {
-	m_pQueue->Signal(m_pFence.Get(), m_fenceCounter.at(m_frameIndex));
+	m_command_queue->Signal(m_fence.Get(), m_fence_counter.at(m_frame_index));
 
-	m_pFence->SetEventOnCompletion(m_fenceCounter.at(m_frameIndex), m_fenceEvent);
+	m_fence->SetEventOnCompletion(m_fence_counter.at(m_frame_index), m_fence_event);
 
-	WaitForSingleObjectEx(m_fenceEvent, INFINITE, false);
+	WaitForSingleObjectEx(m_fence_event, INFINITE, false);
 
-	++m_fenceCounter.at(m_frameIndex);
+	++m_fence_counter.at(m_frame_index);
 }

@@ -153,22 +153,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="box_collider3d.hpp" />
+    <ClInclude Include="collider.hpp" />
+    <ClInclude Include="collider_table.hpp" />
+    <ClInclude Include="component.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="descriptor_heap.hpp" />
     <ClInclude Include="engine.hpp" />
+    <ClInclude Include="gameobject.hpp" />
+    <ClInclude Include="gpu_buffer.hpp" />
     <ClInclude Include="graphic_d3d12.hpp" />
     <ClInclude Include="math.hpp" />
     <ClInclude Include="matrix4x4.hpp" />
     <ClInclude Include="random.hpp" />
+    <ClInclude Include="sphere_collider3d.hpp" />
+    <ClInclude Include="transform.hpp" />
     <ClInclude Include="vector2.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="math_calc.hpp" />
     <ClInclude Include="vector3.hpp" />
+    <ClInclude Include="vertex.hpp" />
     <ClInclude Include="winapp.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="box_collider3d.cpp" />
+    <ClCompile Include="collider.cpp" />
+    <ClCompile Include="component.cpp" />
     <ClCompile Include="core.cpp" />
     <ClCompile Include="descriptor_heap.cpp" />
+    <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="gpu_buffer.cpp" />
     <ClCompile Include="graphic_d3d12.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="pch.cpp">
@@ -177,6 +191,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="sphere_collider3d.cpp" />
+    <ClCompile Include="transform.cpp" />
     <ClCompile Include="winapp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

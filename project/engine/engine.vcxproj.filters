@@ -23,6 +23,18 @@
     <Filter Include="source\core\graphic">
       <UniqueIdentifier>{78880733-090d-4834-b90d-24c758313104}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\core\graphic\model">
+      <UniqueIdentifier>{310d8298-5298-4c48-bf48-2948bdf3b03f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\gameobject">
+      <UniqueIdentifier>{43aba133-a107-4952-bcf5-aa2adff8e904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\gameobject\component">
+      <UniqueIdentifier>{a2d70349-0a1c-4cd7-b8d6-da1f7589ec3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\gameobject\component\collider">
+      <UniqueIdentifier>{96a5406d-c2ac-4dec-88ac-4166f46b1f61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp">
@@ -61,6 +73,33 @@
     <ClInclude Include="descriptor_heap.hpp">
       <Filter>source\core\graphic</Filter>
     </ClInclude>
+    <ClInclude Include="gpu_buffer.hpp">
+      <Filter>source\core\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex.hpp">
+      <Filter>source\core\graphic\model</Filter>
+    </ClInclude>
+    <ClInclude Include="component.hpp">
+      <Filter>source\gameobject\component</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject.hpp">
+      <Filter>source\gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="transform.hpp">
+      <Filter>source\gameobject\component</Filter>
+    </ClInclude>
+    <ClInclude Include="collider.hpp">
+      <Filter>source\gameobject\component\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="box_collider3d.hpp">
+      <Filter>source\gameobject\component\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="collider_table.hpp">
+      <Filter>source\gameobject\component\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere_collider3d.hpp">
+      <Filter>source\gameobject\component\collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">
@@ -80,6 +119,27 @@
     </ClCompile>
     <ClCompile Include="descriptor_heap.cpp">
       <Filter>source\core\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="gpu_buffer.cpp">
+      <Filter>source\core\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="component.cpp">
+      <Filter>source\gameobject\component</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject.cpp">
+      <Filter>source\gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="transform.cpp">
+      <Filter>source\gameobject\component</Filter>
+    </ClCompile>
+    <ClCompile Include="collider.cpp">
+      <Filter>source\gameobject\component\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="box_collider3d.cpp">
+      <Filter>source\gameobject\component\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere_collider3d.cpp">
+      <Filter>source\gameobject\component\collider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

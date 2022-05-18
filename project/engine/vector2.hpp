@@ -12,19 +12,17 @@ namespace math
 	template<typename T> class basic_vector2
 	{
 	public:
-		inline constexpr explicit basic_vector2();
-		inline constexpr explicit basic_vector2(T value);
-		inline constexpr explicit basic_vector2(T x, T y);
+		explicit inline constexpr basic_vector2();
+		explicit inline constexpr basic_vector2(T value);
+		explicit inline constexpr basic_vector2(T x, T y);
 
 	public:
 		inline constexpr T* data();
-		inline constexpr T& at(uint32_t i);
 		inline constexpr T& x();
 		inline constexpr T& y();
 
 	public:
 		inline constexpr const T* data() const;
-		inline constexpr const T& at(uint32_t i) const;
 		inline constexpr const T& x() const;
 		inline constexpr const T& y() const;
 
@@ -69,12 +67,10 @@ namespace math
 	template<typename T> inline constexpr basic_vector2<T>::basic_vector2(T x, T y) : _{x,y} {}
 
 	template<typename T> inline constexpr T* basic_vector2<T>::data() { return _.data(); }
-	template<typename T> inline constexpr T& basic_vector2<T>::at(uint32_t i) { return _.at(i); }
 	template<typename T> inline constexpr T& basic_vector2<T>::x() { return _.at(VEC2_X); }
 	template<typename T> inline constexpr T& basic_vector2<T>::y() { return _.at(VEC2_Y); }
 
 	template<typename T> inline constexpr const T* basic_vector2<T>::data() const { return _.data(); }
-	template<typename T> inline constexpr const T& basic_vector2<T>::at(uint32_t i) const { return _.at(i); }
 	template<typename T> inline constexpr const T& basic_vector2<T>::x() const { return _.at(VEC2_X); }
 	template<typename T> inline constexpr const T& basic_vector2<T>::y() const { return _.at(VEC2_Y); }
 
