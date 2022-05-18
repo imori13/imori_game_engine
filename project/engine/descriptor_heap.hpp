@@ -1,32 +1,55 @@
 #pragma once
 
+enum class heap_type : uint8_t
+{
+	cbv_srv_uav = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
+	sampler = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER,
+	rtv = D3D12_DESCRIPTOR_HEAP_TYPE_RTV,
+	dsv = D3D12_DESCRIPTOR_HEAP_TYPE_DSV,
+};
+
+enum class heap_flag : uint8_t
+{
+	none = D3D12_DESCRIPTOR_HEAP_FLAG_NONE,
+	shader_visible = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE,
+};
+
+struct descriptor_handle
+{
+	D3D12_CPU_DESCRIPTOR_HANDLE cpu_handle;
+	D3D12_GPU_DESCRIPTOR_HANDLE gpu_handle;
+};
+
 class descriptor_heap
 {
 public:
 	descriptor_heap() = default;
-	descriptor_heap(gsl::not_null<ID3D12Device*> pDevice, D3D12_DESCRIPTOR_HEAP_TYPE heapType, uint32_t descriptorCount);
+	descriptor_heap(gsl::not_null<ID3D12Device*> pDevice, uint32_t descriptor_count, heap_type heap_type, heap_flag heap_flag = heap_flag::none);
 
 public:
-	inline D3D12_CPU_DESCRIPTOR_HANDLE at(uint32_t index) const noexcept
-	{
-		Expects(this != nullptr);
-		Expects(0 <= index && index < m_descriptor_count);
-		return D3D12_CPU_DESCRIPTOR_HANDLE{ m_heap_handle.ptr + m_incriment_size * index };
-	}
+	inline descriptor_handle at(size_t index) const noexcept { return m_descriptors.at(index); }
 
-	inline void createRenderTargetView(ID3D12Resource* resource)
+	inline void create_rtv(gsl::not_null<ID3D12Resource*> resource)
 	{
-		Expects(this != nullptr);
 		D3D12_RENDER_TARGET_VIEW_DESC view_desc{};
 		view_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 		view_desc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 		view_desc.Texture2D.MipSlice = 0;
 		view_desc.Texture2D.PlaneSlice = 0;
 
-		m_descriptors.at(m_empty_header) = at(m_empty_header);
+		m_device->CreateRenderTargetView(resource, &view_desc, at(m_empty_header).cpu_handle);
 
-		m_device->CreateRenderTargetView(resource, &view_desc, at(m_empty_header));
-		
+		this->next();
+	}
+
+	inline void create_cbv(gsl::not_null<ID3D12Resource*> resource)
+	{
+		D3D12_CONSTANT_BUFFER_VIEW_DESC view_desc{};
+		view_desc.BufferLocation = resource->GetGPUVirtualAddress();
+		view_desc.SizeInBytes = gsl::narrow<UINT>(resource->GetDesc().Width);
+
+		m_device->CreateConstantBufferView(&view_desc, at(m_empty_header).cpu_handle);
+
 		this->next();
 	}
 
@@ -40,14 +63,13 @@ private:
 	}
 
 private:
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_heap;
-	D3D12_CPU_DESCRIPTOR_HANDLE m_heap_handle;
-	uint64_t m_incriment_size;
 	gsl::not_null<ID3D12Device*> m_device;
-
-	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_descriptors;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_heap;
+	std::vector<descriptor_handle> m_descriptors;
+	descriptor_handle m_heap_handle;
 
 private:
+	uint64_t m_incriment_size;
 	uint32_t m_descriptor_count;
 	uint32_t m_empty_header;
 };

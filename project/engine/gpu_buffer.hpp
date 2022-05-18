@@ -65,6 +65,9 @@ public:
 		vertexbuffer_view.StrideInBytes = gsl::narrow<UINT>(sizeof(T));
 	}
 
+public:
+	inline gsl::not_null<ID3D12Resource*> get_resource() { return m_resource.Get(); }
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_resource;
 

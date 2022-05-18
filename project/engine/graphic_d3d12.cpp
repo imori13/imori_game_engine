@@ -184,13 +184,13 @@ graphic_d3d12::graphic_d3d12(const winapp& winapp)
 
 	// create render target view
 	{
-		m_heap_rtv = std::make_unique<descriptor_heap>(m_device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, FRAME_COUNT);
+		m_heap_rtv = std::make_unique<descriptor_heap>(m_device.Get(), FRAME_COUNT, heap_type::rtv);
 
 		for(auto i = 0u; i < m_color_buffer.size(); ++i)
 		{
 			m_color_buffer.at(i) = get_color_buffer(m_swapchain.Get(), i);
 
-			m_heap_rtv->createRenderTargetView(m_color_buffer.at(i).Get());
+			m_heap_rtv->create_rtv(m_color_buffer.at(i).Get());
 		}
 	}
 
@@ -244,6 +244,9 @@ graphic_d3d12::graphic_d3d12(const winapp& winapp)
 	gpu_buffer<transform> transform_buffer(m_device.Get(), sizeof(transform));
 
 	transform_buffer.map(gsl::make_span<transform>(&tttt, 1));
+
+	descriptor_heap constract_heap(m_device.Get(), FRAME_COUNT, heap_type::cbv_srv_uav, heap_flag::shader_visible);
+	constract_heap.create_cbv(transform_buffer.get_resource());
 }
 
 graphic_d3d12::~graphic_d3d12() noexcept(false)
@@ -276,7 +279,7 @@ void graphic_d3d12::render()
 
 	constexpr const std::array<float, 4> clear_color = { 0.25f,0.25f,0.25f,1.0f };
 
-	m_command_list->ClearRenderTargetView(m_heap_rtv->at(m_frame_index), clear_color.data(), 0, nullptr);
+	m_command_list->ClearRenderTargetView(m_heap_rtv->at(m_frame_index).cpu_handle, clear_color.data(), 0, nullptr);
 
 	// ï`âÊèàóù
 	{
