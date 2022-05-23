@@ -158,6 +158,7 @@
     <ClInclude Include="collider_table.hpp" />
     <ClInclude Include="component.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="d3d12_factory.hpp" />
     <ClInclude Include="descriptor_heap.hpp" />
     <ClInclude Include="engine.hpp" />
     <ClInclude Include="gameobject.hpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="component.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="d3d12_factory.cpp" />
     <ClCompile Include="descriptor_heap.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="gpu_buffer.cpp" />

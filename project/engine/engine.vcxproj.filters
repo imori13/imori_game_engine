@@ -100,6 +100,9 @@
     <ClInclude Include="sphere_collider3d.hpp">
       <Filter>source\gameobject\component\collider</Filter>
     </ClInclude>
+    <ClInclude Include="d3d12_factory.hpp">
+      <Filter>source\core\graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="sphere_collider3d.cpp">
       <Filter>source\gameobject\component\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="d3d12_factory.cpp">
+      <Filter>source\core\graphic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
