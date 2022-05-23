@@ -103,6 +103,9 @@
     <ClInclude Include="d3d12_factory.hpp">
       <Filter>source\core\graphic</Filter>
     </ClInclude>
+    <ClInclude Include="swapchain.hpp">
+      <Filter>source\core\graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">
@@ -145,6 +148,9 @@
       <Filter>source\gameobject\component\collider</Filter>
     </ClCompile>
     <ClCompile Include="d3d12_factory.cpp">
+      <Filter>source\core\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="swapchain.cpp">
       <Filter>source\core\graphic</Filter>
     </ClCompile>
   </ItemGroup>

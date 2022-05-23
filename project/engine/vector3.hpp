@@ -48,8 +48,8 @@ namespace math
 		inline constexpr T lengthSquare() const;
 		inline constexpr T length() const;
 		inline constexpr basic_vector3 normalized() const;
-		inline constexpr float dot(basic_vector3 other) const;
-		inline constexpr basic_vector3 cross(basic_vector3 other) const;
+		inline constexpr float dot(const basic_vector3& other) const;
+		inline constexpr basic_vector3 cross(const basic_vector3& other) const;
 
 	private:
 		std::array<T, VEC3_COUNT> _;
@@ -135,12 +135,12 @@ namespace math
 		return copy;
 	}
 
-	template<typename T> inline constexpr float basic_vector3<T>::dot(basic_vector3 other) const
+	template<typename T> inline constexpr float basic_vector3<T>::dot(const basic_vector3& other) const
 	{
 		return x() * other.x() + y() * other.y() + z() * other.z();
 	}
 
-	template<typename T> inline constexpr basic_vector3<T> basic_vector3<T>::cross(basic_vector3 other) const
+	template<typename T> inline constexpr basic_vector3<T> basic_vector3<T>::cross(const basic_vector3& other) const
 	{
 		return basic_vector3
 		(

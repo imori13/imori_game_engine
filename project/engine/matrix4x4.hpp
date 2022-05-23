@@ -25,14 +25,14 @@ namespace math
 		inline constexpr const T& at(uint64_t x, uint64_t y) const;
 
 	public:
-		inline constexpr basic_matrix4x4& operator+=(basic_matrix4x4 other);
-		inline constexpr basic_matrix4x4& operator-=(basic_matrix4x4 other);
-		inline constexpr basic_matrix4x4& operator*=(basic_matrix4x4 other);
+		inline constexpr basic_matrix4x4& operator+=(const basic_matrix4x4& other);
+		inline constexpr basic_matrix4x4& operator-=(const basic_matrix4x4& other);
+		inline constexpr basic_matrix4x4& operator*=(const basic_matrix4x4& other);
 
 	public:
-		inline constexpr basic_matrix4x4 operator+(basic_matrix4x4 other) const;
-		inline constexpr basic_matrix4x4 operator-(basic_matrix4x4 other) const;
-		inline constexpr basic_matrix4x4 operator*(basic_matrix4x4 other) const;
+		inline constexpr basic_matrix4x4 operator+(const basic_matrix4x4& other) const;
+		inline constexpr basic_matrix4x4 operator-(const basic_matrix4x4& other) const;
+		inline constexpr basic_matrix4x4 operator*(const basic_matrix4x4& other) const;
 
 	public:
 		static inline constexpr basic_matrix4x4 identity();
@@ -60,7 +60,7 @@ namespace math
 	template<typename T> inline constexpr const T& basic_matrix4x4<T>::at(uint32_t i) const { return _.at(i); }
 	template<typename T> inline constexpr const T& basic_matrix4x4<T>::at(uint64_t x, uint64_t y) const { return _.at(x + y * MATRIX4X4_ROW); }
 
-	template<typename T> inline constexpr basic_matrix4x4<T>& basic_matrix4x4<T>::operator+=(basic_matrix4x4 other)
+	template<typename T> inline constexpr basic_matrix4x4<T>& basic_matrix4x4<T>::operator+=(const basic_matrix4x4& other)
 	{
 		at(0, 0) += other.at(0, 0);
 		at(0, 1) += other.at(0, 1);
@@ -85,7 +85,7 @@ namespace math
 		return *this;
 	}
 
-	template<typename T> inline constexpr basic_matrix4x4<T>& basic_matrix4x4<T>::operator-=(basic_matrix4x4 other)
+	template<typename T> inline constexpr basic_matrix4x4<T>& basic_matrix4x4<T>::operator-=(const basic_matrix4x4& other)
 	{
 		at(0, 0) -= other.at(0, 0);
 		at(0, 1) -= other.at(0, 1);
@@ -110,13 +110,13 @@ namespace math
 		return *this;
 	}
 
-	template<typename T> inline constexpr basic_matrix4x4<T>& basic_matrix4x4<T>::operator*=(basic_matrix4x4 other)
+	template<typename T> inline constexpr basic_matrix4x4<T>& basic_matrix4x4<T>::operator*=(const basic_matrix4x4& other)
 	{
 		*this = *this * other;
 		return *this;
 	}
 
-	template<typename T> inline constexpr basic_matrix4x4<T> basic_matrix4x4<T>::operator+(basic_matrix4x4 other) const
+	template<typename T> inline constexpr basic_matrix4x4<T> basic_matrix4x4<T>::operator+(const basic_matrix4x4& other) const
 	{
 		return basic_matrix4x4(
 			at(0, 0) + other.at(0, 0), at(0, 1) + other.at(0, 1), at(0, 2) + other.at(0, 2), at(0, 3) + other.at(0, 3),
@@ -126,7 +126,7 @@ namespace math
 		);
 	}
 
-	template<typename T> inline constexpr basic_matrix4x4<T> basic_matrix4x4<T>::operator-(basic_matrix4x4 other) const
+	template<typename T> inline constexpr basic_matrix4x4<T> basic_matrix4x4<T>::operator-(const basic_matrix4x4& other) const
 	{
 		return basic_matrix4x4(
 			at(0, 0) - other.at(0, 0), at(0, 1) - other.at(0, 1), at(0, 2) - other.at(0, 2), at(0, 3) - other.at(0, 3),
@@ -136,7 +136,7 @@ namespace math
 		);
 	}
 
-	template<typename T> inline constexpr basic_matrix4x4<T> basic_matrix4x4<T>::operator*(basic_matrix4x4 other) const
+	template<typename T> inline constexpr basic_matrix4x4<T> basic_matrix4x4<T>::operator*(const basic_matrix4x4& other) const
 	{
 		return basic_matrix4x4(
 			at(0, 0) * other.at(0, 0) + at(0, 1) * other.at(1, 0) + at(0, 2) * other.at(2, 0) + at(0, 3) * other.at(3, 0),

@@ -1,12 +1,20 @@
 #pragma once
 #include "vertex.hpp"
 
-template<class T>
-class gpu_buffer
+template<class T> class gpu_buffer
 {
 public:
+	gpu_buffer() noexcept
+		: m_buffer_size(0)
+		, m_resource(nullptr)
+		, m_ptr(nullptr)
+	{
+	}
+
 	gpu_buffer(gsl::not_null<ID3D12Device*> pDevice, size_t buffer_size)
 		: m_buffer_size(buffer_size)
+		, m_resource(nullptr)
+		, m_ptr(nullptr)
 	{
 		// setting heap
 		D3D12_HEAP_PROPERTIES prop{};
@@ -43,17 +51,21 @@ public:
 	}
 
 public:
-	void map(gsl::span<T> span)
+	inline void map(gsl::span<T> span)
 	{
 		// mapping
-		void* ptr = nullptr;
-		const auto& hr = m_resource->Map(0, nullptr, &ptr);
+		const auto& hr = m_resource->Map(0, nullptr, reinterpret_cast<void**>(&m_ptr));
 		Ensures(SUCCEEDED(hr));
 
 		Expects(span.size_bytes() == m_buffer_size);
-		memcpy_s(ptr, m_buffer_size, span.data(), m_buffer_size);
+		memcpy_s(m_ptr, m_buffer_size, span.data(), m_buffer_size);
 
-		m_resource->Unmap(0, nullptr);
+		//m_resource->Unmap(0, nullptr);
+	}
+
+	inline gsl::not_null<T*> get()
+	{
+		return m_ptr;
 	}
 
 	// vertex_buffer_view
@@ -61,8 +73,9 @@ public:
 	{
 		D3D12_VERTEX_BUFFER_VIEW vertexbuffer_view{};
 		vertexbuffer_view.BufferLocation = m_resource->GetGPUVirtualAddress();
-		vertexbuffer_view.SizeInBytes = m_buffer_size;
+		vertexbuffer_view.SizeInBytes = static_cast<UINT>(m_buffer_size);
 		vertexbuffer_view.StrideInBytes = gsl::narrow<UINT>(sizeof(T));
+		return vertexbuffer_view;
 	}
 
 public:
@@ -70,6 +83,7 @@ public:
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_resource;
+	T* m_ptr;
 
 	size_t m_buffer_size;
 };

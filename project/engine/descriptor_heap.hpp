@@ -44,13 +44,22 @@ public:
 
 	inline void create_cbv(gsl::not_null<ID3D12Resource*> resource)
 	{
-		D3D12_CONSTANT_BUFFER_VIEW_DESC view_desc{};
-		view_desc.BufferLocation = resource->GetGPUVirtualAddress();
-		view_desc.SizeInBytes = gsl::narrow<UINT>(resource->GetDesc().Width);
+		cbv_view_desc.BufferLocation = resource->GetGPUVirtualAddress();
+		cbv_view_desc.SizeInBytes = gsl::narrow<UINT>(resource->GetDesc().Width);
 
-		m_device->CreateConstantBufferView(&view_desc, at(m_empty_header).cpu_handle);
+		m_device->CreateConstantBufferView(&cbv_view_desc, at(m_empty_header).cpu_handle);
 
 		this->next();
+	}
+
+	inline ID3D12DescriptorHeap** get_address() noexcept
+	{
+		return m_heap.GetAddressOf();
+	}
+
+	inline D3D12_CONSTANT_BUFFER_VIEW_DESC get_cbv_view_desc() noexcept
+	{
+		return cbv_view_desc;
 	}
 
 private:
@@ -72,4 +81,7 @@ private:
 	uint64_t m_incriment_size;
 	uint32_t m_descriptor_count;
 	uint32_t m_empty_header;
+
+private:
+	D3D12_CONSTANT_BUFFER_VIEW_DESC cbv_view_desc;
 };

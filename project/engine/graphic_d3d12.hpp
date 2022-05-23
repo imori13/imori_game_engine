@@ -1,10 +1,19 @@
 #pragma once
 #include "winapp.hpp"
+#include "vertex.hpp"
+#include "gpu_buffer.hpp"
 
 namespace
 {
 	constexpr uint32_t FRAME_COUNT = 2;
 }
+
+struct alignas(256) _transform
+{
+	DirectX::XMMATRIX world;
+	DirectX::XMMATRIX view;
+	DirectX::XMMATRIX proj;
+};
 
 class descriptor_heap;
 
@@ -24,6 +33,7 @@ public:
 
 public:
 	void render();
+	void update();
 	void wait_gpu();
 
 private:
@@ -37,6 +47,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_command_list;
 	std::unique_ptr<descriptor_heap> m_heap_rtv;
 	Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_root_signature;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pipeline;
+	std::unique_ptr<descriptor_heap> m_heap_cbv;
+	gpu_buffer<vertex> m_vertex_buffer;
+	std::array<gpu_buffer<_transform>, FRAME_COUNT> m_constant_buffers;
 
 	HANDLE m_fence_event;
 	uint32_t m_frame_index;
