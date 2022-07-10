@@ -99,9 +99,9 @@ graphic_d3d12::graphic_d3d12(const winapp& winapp)
 
 	std::vector<vertex> vertices =
 	{
-		vertex{ DirectX::XMFLOAT3{-1.0f,-1.0f, 0.0f}, DirectX::XMFLOAT4{0.0f, 0.0f, 1.0f, 1.0f} },
-		vertex{ DirectX::XMFLOAT3{ 1.0f,-1.0f, 0.0f}, DirectX::XMFLOAT4{0.0f, 1.0f, 0.0f, 1.0f} },
-		vertex{ DirectX::XMFLOAT3{ 0.0f, 1.0f, 0.0f}, DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 1.0f} },
+		vertex{ vector3(-1.0f,-1.0f, 0.0f), vector4(0.0f, 0.0f, 1.0f, 1.0f)},
+		vertex{ vector3( 1.0f,-1.0f, 0.0f), vector4(0.0f, 1.0f, 0.0f, 1.0f)},
+		vertex{ vector3( 0.0f, 1.0f, 0.0f), vector4(1.0f, 0.0f, 0.0f, 1.0f)},
 	};
 
 	m_vertex_buffer = gpu_buffer<vertex>(m_device.Get(), vertices.size() * sizeof(vertex));

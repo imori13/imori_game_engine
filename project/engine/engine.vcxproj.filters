@@ -106,6 +106,9 @@
     <ClInclude Include="swapchain.hpp">
       <Filter>source\core\graphic</Filter>
     </ClInclude>
+    <ClInclude Include="vector4.hpp">
+      <Filter>source\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">

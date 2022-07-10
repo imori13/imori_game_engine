@@ -11,6 +11,7 @@
 #include "random.hpp"
 #include "vector2.hpp"
 #include "vector3.hpp"
+#include "vector4.hpp"
 #include "matrix4x4.hpp"
 
 using namespace math;
