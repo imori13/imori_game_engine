@@ -73,7 +73,7 @@ public:
 	{
 		D3D12_VERTEX_BUFFER_VIEW vertexbuffer_view{};
 		vertexbuffer_view.BufferLocation = m_resource->GetGPUVirtualAddress();
-		vertexbuffer_view.SizeInBytes = static_cast<UINT>(m_buffer_size);
+		vertexbuffer_view.SizeInBytes = gsl::narrow<UINT>(m_buffer_size);
 		vertexbuffer_view.StrideInBytes = gsl::narrow<UINT>(sizeof(T));
 		return vertexbuffer_view;
 	}

@@ -1,4 +1,5 @@
 #pragma once
+#include "math.hpp"
 
 namespace
 {
@@ -45,7 +46,7 @@ namespace math
 		inline constexpr void normalize();
 
 	public:
-		inline constexpr T lengthSquare() const;
+		inline constexpr T length_square() const;
 		inline constexpr T length() const;
 		inline constexpr basic_vector3 normalized() const;
 		inline constexpr float dot(const basic_vector3& other) const;
@@ -54,6 +55,10 @@ namespace math
 	private:
 		std::array<T, VEC3_COUNT> _;
 	};
+
+	// ----------------------------------------------------------------------------------------------------
+	// usingêÈåæ
+	// ----------------------------------------------------------------------------------------------------
 
 	using vector3 = basic_vector3<float>;
 	using vector3f = basic_vector3<float>;
@@ -115,17 +120,17 @@ namespace math
 
 	template<typename T> inline constexpr void basic_vector3<T>::normalize()
 	{
-		*this /= lengthSquare();
+		*this /= length_square();
 	}
 
-	template<typename T> inline constexpr T basic_vector3<T>::lengthSquare() const
+	template<typename T> inline constexpr T basic_vector3<T>::length_square() const
 	{
 		return x() * x() + y() * y() + z() * z();
 	}
 
 	template<typename T> inline constexpr T basic_vector3<T>::length() const
 	{
-		return math::sqrt(this->lengthSquare());
+		return math::sqrt(this->length_square());
 	}
 
 	template<typename T> inline constexpr basic_vector3<T> basic_vector3<T>::normalized() const
